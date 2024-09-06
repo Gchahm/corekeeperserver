@@ -1,9 +1,9 @@
 # Set shared environment variables
 source core.env
 
-LOCATION="westeurope"
+LOCATION="eastus"
 
-RESOURCE_GROUP="corekeepergameserverrg"
+RESOURCE_GROUP="corekeepergameserver"
 
 CONTAINER_REGISTRY="locksdamontanhacorekeeper"
 
@@ -12,4 +12,4 @@ STORAGE_ACCOUNT_FILESHARE="corekeepergameserverbackup"
 
 DOCKER_CONTAINER="corekeeperdocker"
 DOCKER_CONTAINER_TAG="1.0"
-DOCKER_CONTAINER_FILESHARE_PATH="/home/linuxgsm/corekeepergameserverbackup/"
+DOCKER_CONTAINER_FILESHARE_PATH=$DATA_PATH

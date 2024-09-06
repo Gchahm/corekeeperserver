@@ -8,13 +8,13 @@ echo "Login to Container Registry $CONTAINER_REGISTRY"
 az acr login --name $CONTAINER_REGISTRY
 
 echo "Tagging image with fully qualified domain name of the registry $DOCKER_CONTAINER:$DOCKER_CONTAINER_TAG"
-docker tag $DOCKER_CONTAINER:$DOCKER_CONTAINER_TAG $CONTAINER_REGISTRY.azurecr.io/$DOCKER_CONTAINER:$DOCKER_CONTAINER_TAG
+docker tag "$DOCKER_CONTAINER:$DOCKER_CONTAINER_TAG" "$CONTAINER_REGISTRY.azurecr.io/$DOCKER_CONTAINER:$DOCKER_CONTAINER_TAG"
 
 echo "Pushing image to the container registry $CONTAINER_REGISTRY.azurecr.io"
-docker push $CONTAINER_REGISTRY.azurecr.io/$DOCKER_CONTAINER:$DOCKER_CONTAINER_TAG
+docker push "$CONTAINER_REGISTRY.azurecr.io/$DOCKER_CONTAINER:$DOCKER_CONTAINER_TAG"
 
 echo "Removing image from local repository $CONTAINER_REGISTRY.azurecr.io/$DOCKER_CONTAINER:$DOCKER_CONTAINER_TAG"
-docker rmi $CONTAINER_REGISTRY.azurecr.io/$DOCKER_CONTAINER:$DOCKER_CONTAINER_TAG
+docker rmi "$CONTAINER_REGISTRY.azurecr.io/$DOCKER_CONTAINER:$DOCKER_CONTAINER_TAG"
 
 # Create the Azure container instance
 
@@ -33,13 +33,15 @@ STORAGE_ACCOUNT_KEY=$(
     --output tsv \
 )
 
+echo "Creating container"
+
 az container create \
     -g $RESOURCE_GROUP \
-    --name $DOCKER_CONTAINER \
-    --image $DOCKER_CONTAINER:$DOCKER_CONTAINER_TAG \
+    --name "$DOCKER_CONTAINER" \
+    --image "$DOCKER_CONTAINER:$DOCKER_CONTAINER_TAG" \
     --ports 2456 2457 \
-    --dns-name-label $DOCKER_CONTAINER \
-    --image $CONTAINER_REGISTRY.azurecr.io/$DOCKER_CONTAINER:$DOCKER_CONTAINER_TAG \
+    --dns-name-label "$DOCKER_CONTAINER" \
+    --image "$CONTAINER_REGISTRY.azurecr.io/$DOCKER_CONTAINER:$DOCKER_CONTAINER_TAG" \
     --registry-username $CONTAINER_REGISTRY \
     --registry-password $CONTAINER_REGISTRY_KEY \
     --cpu 4 \
